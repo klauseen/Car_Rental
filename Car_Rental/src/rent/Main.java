@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JToggleButton;
+import java.awt.Font;
 
 public class Main extends JFrame {
 
@@ -34,30 +35,39 @@ public class Main extends JFrame {
 	public Main() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 866, 750);
+		
+		setLocationRelativeTo(null); // pentru ca sa fie centrat pe centru
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JToggleButton tglbtnNewToggleButton = new JToggleButton("New toggle button");
-		tglbtnNewToggleButton.setBounds(342, 67, 115, 21);
-		contentPane.add(tglbtnNewToggleButton);
+		JToggleButton btnCarReg = new JToggleButton("Car Registration");
+		btnCarReg.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnCarReg.setBounds(293, 58, 240, 79);
+		contentPane.add(btnCarReg);
 		
-		JToggleButton tglbtnNewToggleButton_1 = new JToggleButton("New toggle button");
-		tglbtnNewToggleButton_1.setBounds(342, 180, 115, 21);
-		contentPane.add(tglbtnNewToggleButton_1);
+		JToggleButton btnCustomer = new JToggleButton("Customer");
+		btnCustomer.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnCustomer.setBounds(293, 178, 240, 67);
+		contentPane.add(btnCustomer);
 		
-		JToggleButton tglbtnNewToggleButton_2 = new JToggleButton("New toggle button");
-		tglbtnNewToggleButton_2.setBounds(342, 400, 115, 21);
-		contentPane.add(tglbtnNewToggleButton_2);
+		JToggleButton btnReturn = new JToggleButton("Return");
+		btnReturn.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnReturn.setBounds(293, 392, 240, 67);
+		contentPane.add(btnReturn);
 		
-		JToggleButton tglbtnNewToggleButton_3 = new JToggleButton("New toggle button");
-		tglbtnNewToggleButton_3.setBounds(342, 298, 115, 21);
-		contentPane.add(tglbtnNewToggleButton_3);
+		JToggleButton btnRental = new JToggleButton("Rental");
+		btnRental.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnRental.setBounds(293, 283, 240, 67);
+		contentPane.add(btnRental);
 		
-		JToggleButton tglbtnNewToggleButton_4 = new JToggleButton("New toggle button");
-		tglbtnNewToggleButton_4.setBounds(342, 548, 115, 21);
-		contentPane.add(tglbtnNewToggleButton_4);
+		JToggleButton btnLogout = new JToggleButton("Logout");
+		btnLogout.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnLogout.setBounds(293, 500, 240, 72);
+		contentPane.add(btnLogout);
 	}
 }

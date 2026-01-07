@@ -102,6 +102,7 @@ public class Login extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		btnLogin.addActionListener(evt -> handleLogin(evt));
+		btnCancel.addActionListener(e -> dispose());
 	}
 	
 	private void handleLogin(java.awt.event.ActionEvent evt) {
