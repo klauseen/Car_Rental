@@ -58,28 +58,19 @@ public class CarRegistration extends JFrame {
 	         ResultSet rs = pst.executeQuery()) {
 
 	        if (rs.next()) {
-	            String maxCar = rs.getString("maxCar"); // va returna null dacă tabelul e gol
+	            String maxCar = rs.getString("maxCar"); // will return null if it is empty
 
 	            if (maxCar == null) {
-	                // Tabelul e gol, deci primul ID va fi C001
+	                
 	                txtReg.setText("C001");
 	            } else {
-	                // Extragem partea numerică după C
+	                // Extract numeric part of C
 	                long id = Long.parseLong(maxCar.substring(1));
-	                id++; // incrementăm
-	                txtReg.setText("C" + String.format("%03d", id)); // formatare cu 3 cifre
+	                id++; 
+	                txtReg.setText("C" + String.format("%03d", id)); // 3 digit format
 	            }
 	        }
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        txtReg.setText("C001"); // fallback dacă ceva nu merge
-	    }
-	    
-	    try {
-	        Connection con = DriverManager.getConnection(
-	            "jdbc:mysql://127.0.0.1:3306/nikrent_schema", "root", "nikolaos411405518");
-	        System.out.println("Conexiune reușită!");
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
