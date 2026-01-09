@@ -16,6 +16,10 @@ public class Main extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+	
+	
+	
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -49,6 +53,13 @@ public class Main extends JFrame {
 		btnCarReg.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnCarReg.setBounds(293, 58, 240, 79);
 		contentPane.add(btnCarReg);
+		
+		btnCarReg.addActionListener(new java.awt.event.ActionListener() {
+		    public void actionPerformed(java.awt.event.ActionEvent e) {
+		        CarRegistration c = new CarRegistration();
+		        c.setVisible(true);  // aici se deschide fereastra CarRegistration
+		    }
+		});
 		
 		JToggleButton btnCustomer = new JToggleButton("Customer");
 		btnCustomer.setFont(new Font("Tahoma", Font.PLAIN, 12));

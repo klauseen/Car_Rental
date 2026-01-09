@@ -102,7 +102,7 @@ public class Login extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		btnLogin.addActionListener(evt -> handleLogin(evt));
-		btnCancel.addActionListener(e -> dispose());
+		btnCancel.addActionListener(e -> System.exit(0)); //  atunci cand apasam "Cancel" el va iesi din tab login
 	}
 	
 	private void handleLogin(java.awt.event.ActionEvent evt) {
