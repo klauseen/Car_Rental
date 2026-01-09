@@ -65,6 +65,43 @@ public class CarRegistration extends JFrame {
 	
 	private JComboBox<String> cBAvailable;
 	
+	private void loadCars() {
+
+	    DefaultTableModel model = (DefaultTableModel) table_2.getModel();
+	    model.setRowCount(0); // curăță tabelul
+
+	    String sql = "SELECT * FROM carregistration";
+
+	    try (Connection con = DriverManager.getConnection(url, user, password);
+	         PreparedStatement pst = con.prepareStatement(sql);
+	         ResultSet rs = pst.executeQuery()) {
+
+	        while (rs.next()) {
+
+	            String reg = rs.getString("Car_no");
+	            String make = rs.getString("Make");
+	            String modelCar = rs.getString("Model");
+	            String colour = rs.getString("Colour");
+	            String type = rs.getString("Type");
+	            String price = rs.getString("PricePerDay");
+	            String available = rs.getString("Available");
+	            String imgPath = rs.getString("Image");
+
+	            ImageIcon icon = null;
+	            if (imgPath != null && !imgPath.isEmpty()) {
+	                icon = new ImageIcon(imgPath);
+	            }
+
+	            model.addRow(new Object[]{
+	                icon, reg, make, modelCar, colour, type, price, available
+	            });
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
 	public void autoID() {
 	    
 
@@ -351,6 +388,7 @@ public class CarRegistration extends JFrame {
 		
 		
 		autoID();
+		loadCars();
 		
 	}
 }
