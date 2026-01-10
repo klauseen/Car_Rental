@@ -440,7 +440,6 @@ public class CarRegistration extends JFrame {
 		        icon.setDescription(imagePath);
 		        model.setValueAt(icon, row, 0);
 
-		        // UPDATE JTable
 		        
 		        model.setValueAt(txtMake.getText(), row, 2);
 		        model.setValueAt(txtModel.getText(), row, 3);
@@ -463,6 +462,47 @@ public class CarRegistration extends JFrame {
 		
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		
+		btnDelete.addActionListener(e -> {
+		    int row = table_2.getSelectedRow();
+		    if (row == -1) {
+		        JOptionPane.showMessageDialog(this, "Select a car first!");
+		        return;
+		    }
+
+		    // Confirmare ștergere
+		    int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this car?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+		    if (confirm != JOptionPane.YES_OPTION) return;
+
+		    String regNo = model.getValueAt(row, 1).toString(); // Car_no
+
+		    try (Connection con = DriverManager.getConnection(url, user, password);
+		         PreparedStatement pst = con.prepareStatement("DELETE FROM carregistration WHERE Car_no=?")) {
+
+		        pst.setString(1, regNo);
+		        pst.executeUpdate();
+
+		        // Ștergem și din JTable
+		        ImageIcon icon = (ImageIcon) model.getValueAt(row, 0); // getDescription trebuie înainte de removeRow
+		        model.removeRow(row);
+
+		        // GRESEALA POTENTIALA: dacă vrei pozele să dispară din folder, poți adăuga asta
+		        
+		        if(icon != null) {
+		            String path = icon.getDescription();
+		            File f = new File(path);
+		            if(f.exists()) {
+		                f.delete(); // șterge fișierul imagine
+		            }
+		        }
+
+		        JOptionPane.showMessageDialog(this, "Car deleted successfully");
+
+		    } catch (SQLException ex) {
+		        ex.printStackTrace();
+		        JOptionPane.showMessageDialog(this, "Error deleting car: " + ex.getMessage());
+		    }
+		});
 		btnDelete.setBounds(88, 536, 104, 35);
 		panel.add(btnDelete);
 		
