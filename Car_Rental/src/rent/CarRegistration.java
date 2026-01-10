@@ -12,6 +12,7 @@ import javax.swing.border.EtchedBorder;
 import java.awt.Color;
 import java.awt.SystemColor;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JButton;
@@ -348,6 +349,9 @@ public class CarRegistration extends JFrame {
 				    pst.setString(8, imagePath);
 				    
 				    pst.executeUpdate();
+				    JOptionPane.showMessageDialog(CarRegistration.this, "Car has been added successfully");
+
+				    
 				    
 				    ImageIcon icon = new ImageIcon(imagePath);
 				    model.addRow(new Object[]{icon, regno, make, carModel, colour, type, pricePerDay, available});
