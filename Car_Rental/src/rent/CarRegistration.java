@@ -485,8 +485,6 @@ public class CarRegistration extends JFrame {
 		        // Ștergem și din JTable
 		        ImageIcon icon = (ImageIcon) model.getValueAt(row, 0); // getDescription trebuie înainte de removeRow
 		        model.removeRow(row);
-
-		        // GRESEALA POTENTIALA: dacă vrei pozele să dispară din folder, poți adăuga asta
 		        
 		        if(icon != null) {
 		            String path = icon.getDescription();
