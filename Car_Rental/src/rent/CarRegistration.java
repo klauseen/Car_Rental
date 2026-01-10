@@ -59,12 +59,12 @@ public class CarRegistration extends JFrame {
 			 "INSERT INTO carregistration(Car_no, Make, Model, Colour, Type, PricePerDay, Available, Image) "
 		             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	
-	Connection con; //se foloseste pentru baza de date sql
+	Connection con; //it's used for sql database, makes the connection
 	PreparedStatement pst;
 	String url = "jdbc:mysql://127.0.0.1:3306/nikrent_schema" ;
 	String user = "root";
 	String password = "nikolaos411405518";
-	String sql = "SELECT MAX(Car_no) AS maxCar FROM carregistration";// numele tabelului și coloanei să fie exact ca în MySQL
+	String sql = "SELECT MAX(Car_no) AS maxCar FROM carregistration";
 	private JTextField txtReg;
 	/**
 	 * Launch the application.
@@ -75,7 +75,7 @@ public class CarRegistration extends JFrame {
 	private void loadCars() {
 
 	    DefaultTableModel model = (DefaultTableModel) table_2.getModel();
-	    model.setRowCount(0); // curăță tabelul
+	    model.setRowCount(0); // cleans the table
 
 	    String sql = "SELECT * FROM carregistration";
 
@@ -97,9 +97,9 @@ public class CarRegistration extends JFrame {
 	            ImageIcon icon = null;
 	            if (imgPath != null && !imgPath.isEmpty()) {
 	            	File f = new File(imgPath);
-	                if(f.exists()) { // verifică dacă fișierul există
+	                if(f.exists()) { // verifies if file exists
 	                    icon = new ImageIcon(imgPath);
-	                    icon.setDescription(imgPath); // asta e crucial
+	                    icon.setDescription(imgPath);
 	                } else {
 	                    System.out.println("Imaginea nu există: " + imgPath);
 	                }
@@ -264,13 +264,13 @@ public class CarRegistration extends JFrame {
 		    if (result == JFileChooser.APPROVE_OPTION) {
 		        File selectedFile = chooser.getSelectedFile();
 
-		        // Creează folderul images dacă nu există
+		        // Creates folder image if it doesn't exist
 		        File imagesDir = new File("images");
 		        if (!imagesDir.exists()) {
 		            imagesDir.mkdirs();
 		        }
 
-		        // Salvează calea imaginii în proiect
+		        // saves image path in project
 		        imagePath = "images/" + selectedFile.getName();
 
 		        try {
@@ -326,7 +326,7 @@ public class CarRegistration extends JFrame {
 		            txtPricePerDay.setText(model.getValueAt(row, 6).toString());
 		            cBAvailable.setSelectedItem(model.getValueAt(row, 7).toString());
 
-		            // imaginea
+		            // image
 		            ImageIcon icon = (ImageIcon) model.getValueAt(row, 0);
 		            imagePath = icon != null ? icon.getDescription() : null;
 		        }
@@ -338,7 +338,7 @@ public class CarRegistration extends JFrame {
 		            int row = table_2.rowAtPoint(evt.getPoint());
 		            if (row == -1) return;
 		            int col = table_2.columnAtPoint(evt.getPoint());
-		            if (col == 0) { // click pe poza
+		            if (col == 0) { // click on picture
 		                ImageIcon icon = (ImageIcon) table_2.getValueAt(row, col);
 		                JFrame f = new JFrame();
 		                f.setSize(400, 400);
@@ -347,7 +347,7 @@ public class CarRegistration extends JFrame {
 		                f.setVisible(true);
 		                
 		                icon = (ImageIcon) model.getValueAt(row, 0);
-		                imagePath = icon != null ? icon.getDescription() : null; // aici
+		                imagePath = icon != null ? icon.getDescription() : null; 
 		            }
 		        }
 		    });
@@ -396,13 +396,12 @@ public class CarRegistration extends JFrame {
 				    
 				    
 				    ImageIcon icon = new ImageIcon(imagePath);
-			        icon.setDescription(imagePath); // asta este crucial
+			        icon.setDescription(imagePath); 
 			        DefaultTableModel model = (DefaultTableModel) table_2.getModel();
 			        model.addRow(new Object[]{icon, regno, make, carModel, colour, type, pricePerDay, available});
 
 				    
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}	         
 			}
@@ -432,7 +431,7 @@ public class CarRegistration extends JFrame {
 		        pst.setString(5, txtPricePerDay.getText());
 		        pst.setString(6, cBAvailable.getSelectedItem().toString());
 		        pst.setString(7, imagePath);
-		        pst.setString(8, txtReg.getText()); // WHERE
+		        pst.setString(8, txtReg.getText()); 
 
 		        pst.executeUpdate();
 		        
@@ -470,7 +469,7 @@ public class CarRegistration extends JFrame {
 		        return;
 		    }
 
-		    // Confirmare ștergere
+		    // This is for the confiramtion of deleting
 		    int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this car?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
 		    if (confirm != JOptionPane.YES_OPTION) return;
 
@@ -482,15 +481,15 @@ public class CarRegistration extends JFrame {
 		        pst.setString(1, regNo);
 		        pst.executeUpdate();
 
-		        // Ștergem și din JTable
-		        ImageIcon icon = (ImageIcon) model.getValueAt(row, 0); // getDescription trebuie înainte de removeRow
+		        // Delete it from Jtable JTable
+		        ImageIcon icon = (ImageIcon) model.getValueAt(row, 0); 
 		        model.removeRow(row);
 		        
 		        if(icon != null) {
 		            String path = icon.getDescription();
 		            File f = new File(path);
 		            if(f.exists()) {
-		                f.delete(); // șterge fișierul imagine
+		                f.delete(); // Delete file image
 		            }
 		        }
 
@@ -506,6 +505,14 @@ public class CarRegistration extends JFrame {
 		
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnCancel.addActionListener(e -> {
+		    // Hides the current window
+		    this.dispose();
+
+		    // Opens the main window
+		    Main mainFrame = new Main(); 
+		    mainFrame.setVisible(true);
+		});
 		btnCancel.setBounds(236, 539, 96, 32);
 		panel.add(btnCancel);
 		
