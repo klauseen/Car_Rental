@@ -51,7 +51,7 @@ public class Main extends JFrame {
 		
 		JToggleButton btnCarReg = new JToggleButton("Car Registration");
 		btnCarReg.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnCarReg.setBounds(293, 58, 240, 79);
+		btnCarReg.setBounds(293, 154, 240, 79);
 		contentPane.add(btnCarReg);
 		
 		btnCarReg.addActionListener(new java.awt.event.ActionListener() {
@@ -61,16 +61,6 @@ public class Main extends JFrame {
 		    }
 		});
 		
-		JToggleButton btnCustomer = new JToggleButton("Customer");
-		btnCustomer.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnCustomer.setBounds(293, 178, 240, 67);
-		contentPane.add(btnCustomer);
-		
-		JToggleButton btnReturn = new JToggleButton("Return");
-		btnReturn.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnReturn.setBounds(293, 392, 240, 67);
-		contentPane.add(btnReturn);
-		
 		JToggleButton btnRental = new JToggleButton("Rental");
 		btnRental.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnRental.setBounds(293, 283, 240, 67);
@@ -78,7 +68,7 @@ public class Main extends JFrame {
 		
 		JToggleButton btnLogout = new JToggleButton("Logout");
 		btnLogout.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnLogout.setBounds(293, 500, 240, 72);
+		btnLogout.setBounds(293, 403, 240, 72);
 		contentPane.add(btnLogout);
 	}
 }
