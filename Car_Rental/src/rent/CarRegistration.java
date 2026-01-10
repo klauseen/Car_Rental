@@ -51,7 +51,13 @@ public class CarRegistration extends JFrame {
 	private JTable table_2;
 	String imagePath = null;
 	
-
+	 private static final String UPDATE_SQL =
+		        "UPDATE carregistration SET Make=?, Model=?, Colour=?, Type=?, PricePerDay=?, Available=?, Image=? " +
+		        "WHERE Car_no=?";
+	 
+	 private static final String INSERT_SQL =
+			 "INSERT INTO carregistration(Car_no, Make, Model, Colour, Type, PricePerDay, Available, Image) "
+		             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	
 	Connection con; //se foloseste pentru baza de date sql
 	PreparedStatement pst;
@@ -90,7 +96,13 @@ public class CarRegistration extends JFrame {
 
 	            ImageIcon icon = null;
 	            if (imgPath != null && !imgPath.isEmpty()) {
-	                icon = new ImageIcon(imgPath);
+	            	File f = new File(imgPath);
+	                if(f.exists()) { // verifică dacă fișierul există
+	                    icon = new ImageIcon(imgPath);
+	                    icon.setDescription(imgPath); // asta e crucial
+	                } else {
+	                    System.out.println("Imaginea nu există: " + imgPath);
+	                }
 	            }
 
 	            model.addRow(new Object[]{
@@ -267,6 +279,11 @@ public class CarRegistration extends JFrame {
 		                Paths.get(imagePath),
 		                StandardCopyOption.REPLACE_EXISTING
 		            );
+		            
+		            ImageIcon icon = new ImageIcon(imagePath);
+		            icon.setDescription(imagePath);
+		            
+		            
 		            System.out.println("Imaginea a fost încărcată: " + imagePath);
 		        } catch (IOException ex) {
 		            ex.printStackTrace();
@@ -294,10 +311,32 @@ public class CarRegistration extends JFrame {
 		    table_2.getColumnModel().getColumn(0).setPreferredWidth(80);
 		    table_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		    
+		    table_2.addMouseListener(new java.awt.event.MouseAdapter() {
+		        @Override
+		        public void mouseClicked(java.awt.event.MouseEvent evt) {
+
+		            int row = table_2.getSelectedRow();
+		            if (row == -1) return;
+
+		            txtReg.setText(model.getValueAt(row, 1).toString());
+		            txtMake.setText(model.getValueAt(row, 2).toString());
+		            txtModel.setText(model.getValueAt(row, 3).toString());
+		            txtColour.setText(model.getValueAt(row, 4).toString());
+		            txtType.setText(model.getValueAt(row, 5).toString());
+		            txtPricePerDay.setText(model.getValueAt(row, 6).toString());
+		            cBAvailable.setSelectedItem(model.getValueAt(row, 7).toString());
+
+		            // imaginea
+		            ImageIcon icon = (ImageIcon) model.getValueAt(row, 0);
+		            imagePath = icon != null ? icon.getDescription() : null;
+		        }
+		    });
+		    
 		    
 		    table_2.addMouseListener(new java.awt.event.MouseAdapter() {
 		        public void mouseClicked(java.awt.event.MouseEvent evt) {
 		            int row = table_2.rowAtPoint(evt.getPoint());
+		            if (row == -1) return;
 		            int col = table_2.columnAtPoint(evt.getPoint());
 		            if (col == 0) { // click pe poza
 		                ImageIcon icon = (ImageIcon) table_2.getValueAt(row, col);
@@ -306,6 +345,9 @@ public class CarRegistration extends JFrame {
 		                JLabel lbl = new JLabel(icon);
 		                f.add(lbl);
 		                f.setVisible(true);
+		                
+		                icon = (ImageIcon) model.getValueAt(row, 0);
+		                imagePath = icon != null ? icon.getDescription() : null; // aici
 		            }
 		        }
 		    });
@@ -354,7 +396,10 @@ public class CarRegistration extends JFrame {
 				    
 				    
 				    ImageIcon icon = new ImageIcon(imagePath);
-				    model.addRow(new Object[]{icon, regno, make, carModel, colour, type, pricePerDay, available});
+			        icon.setDescription(imagePath); // asta este crucial
+			        DefaultTableModel model = (DefaultTableModel) table_2.getModel();
+			        model.addRow(new Object[]{icon, regno, make, carModel, colour, type, pricePerDay, available});
+
 				    
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
@@ -369,6 +414,50 @@ public class CarRegistration extends JFrame {
 		
 		JButton btnEdit = new JButton("Edit");
 		btnEdit.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		
+		btnEdit.addActionListener(e -> {
+		    int row = table_2.getSelectedRow();
+		    if (row == -1) {
+		        JOptionPane.showMessageDialog(this, "Select a car first!");
+		        return;
+		    }
+
+		    try (Connection con = DriverManager.getConnection(url, user, password);
+		        PreparedStatement pst = con.prepareStatement(UPDATE_SQL)) {
+
+		        pst.setString(1, txtMake.getText());
+		        pst.setString(2, txtModel.getText());
+		        pst.setString(3, txtColour.getText());
+		        pst.setString(4, txtType.getText());
+		        pst.setString(5, txtPricePerDay.getText());
+		        pst.setString(6, cBAvailable.getSelectedItem().toString());
+		        pst.setString(7, imagePath);
+		        pst.setString(8, txtReg.getText()); // WHERE
+
+		        pst.executeUpdate();
+		        
+		        ImageIcon icon = new ImageIcon(imagePath);
+		        icon.setDescription(imagePath);
+		        model.setValueAt(icon, row, 0);
+
+		        // UPDATE JTable
+		        
+		        model.setValueAt(txtMake.getText(), row, 2);
+		        model.setValueAt(txtModel.getText(), row, 3);
+		        model.setValueAt(txtColour.getText(), row, 4);
+		        model.setValueAt(txtType.getText(), row, 5);
+		        model.setValueAt(txtPricePerDay.getText(), row, 6);
+		        model.setValueAt(cBAvailable.getSelectedItem(), row, 7);
+		        
+		        
+
+		        JOptionPane.showMessageDialog(this, "Car updated successfully");
+
+
+		    } catch (Exception ex) {
+		        JOptionPane.showMessageDialog(this, ex.getMessage());
+		    }
+		});
 		btnEdit.setBounds(236, 478, 96, 35);
 		panel.add(btnEdit);
 		
